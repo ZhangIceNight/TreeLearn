@@ -1,0 +1,40 @@
+# 低显存配置 - 适用于 8GB 或更低显存
+default_args: ["configs/_modular/sample_generation.yaml", "configs/_modular/model.yaml", "configs/_modular/grouping.yaml", "configs/_modular/dataset_test.yaml"]
+
+############ modification of default args
+model:
+  spatial_shape: [500, 500, 1000]
+
+# 关键优化：减小分块大小以降低显存占用
+sample_generation:
+  voxel_size: 0.1
+  search_radius_features: 0.6
+  inner_edge: 5      # 原值 8 -> 减小到 5 (核心预测区域)
+  outer_edge: 9      # 原值 13.5 -> 减小到 9 (上下文区域)
+  stride: 0.8        # 原值 0.5 -> 增大到 0.8 (减少重叠，加快速度)
+
+# 可选：进一步降低模型通道数（可能影响精度）
+# model:
+#   channels: 24     # 原值 32，如仍显存不足可取消注释
+
+############ non-default args
+forest_path: 'data/pipeline/LAUTx_p14/forest/p14.laz'
+pretrain: 'data/model_weights/model_weights_20241213.pth'
+fp16: True
+tile_generation: True
+
+dataloader:
+  batch_size: 1
+  num_workers: 2
+
+shape_cfg:
+  outer_remove: ~
+  alpha: 0.6
+  buffer_size_to_determine_edge_trees: 0.3
+
+save_cfg:
+  save_formats: ['laz']
+  save_treewise: True
+  save_pointwise: False
+  return_type: 'original'
+  results_dir: 'results_low_vram'

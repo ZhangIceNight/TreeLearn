@@ -7,7 +7,7 @@ model:
   spatial_shape: [500, 500, 1000] # just a technicality, leave unchanged to avoid zero size error. Does not have actual impact on prediction.
 
 ############ non-default args
-forest_path: 'data/pipeline/L1W/forest/L1W.laz' # path to forest point cloud to be segmented (las, npy, npz or txt)
+forest_path: 'data/pipeline/LAUTx_p14/forest/p14.laz' # path to forest point cloud to be segmented (las, npy, npz or txt)
 pretrain: 'data/model_weights/model_weights_20241213.pth' # path to trained network parameters for offset and semantic prediction
 fp16: True # using half precision for network prediction
 tile_generation: True # whether to generate tiles for the forest point cloud to be segmented. If you re-run the pipeline multiple times for the same point cloud, this can be set to False after the first time.
@@ -25,6 +25,6 @@ shape_cfg:
 save_cfg:
   save_formats: ['laz'] # save formats for predicted forest (laz, las, npz, npy or txt)
   save_treewise: True # additionally save predicted trees individually as las files
-  save_pointwise: True # additionally save pointwise results as numpy arrays (offset predictions, semantic predictions, etc.)
+  save_pointwise: False # additionally save pointwise results as numpy arrays (offset predictions, semantic predictions, etc.)
   return_type: 'original' # returns predictions on either the "voxelized_and_filtered", "voxelized" or "original" point cloud. Takes a bit longer if "original" is selected since predictions must be propagated to original input points.
   results_dir: 'results' # name of directory where results are saved
